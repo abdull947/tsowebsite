@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% block title %}Members | TSO{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+  <div class="page-hdr">
+    <div class="section-badge" style="display:inline-flex;margin-bottom:.8rem;"><i class="fa-solid fa-users"></i> Our People</div>
+    <h1>TSO Members</h1>
+    <p>Meet the dedicated people who make Thongmus Students Organization thrive</p>
+  </div>
+  <div class="page-div"></div>
+
+  <!-- CRUD Admin Panel — only for admin -->
+  {% if is_admin %}
+  <div class="admin-panel glass-card">
+    <div class="admin-panel-head">
+      <span><i class="fa-solid fa-sliders"></i> Manage Members</span>
+      <button class="add-btn" onclick="openAddModal()">
+        <i class="fa-solid fa-plus"></i> Add Member
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- TABS -->
+  <div class="member-tabs">
+    <button class="tab-btn active" onclick="switchTab('tso',this)">
+      <i class="fa-solid fa-id-card"></i> TSO Members
+      <span class="tab-count">{{ tso_members|length }}</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('cabinet',this)">
+      <i class="fa-solid fa-briefcase"></i> Cabinet Members
+      <span class="tab-count">{{ cabinet_members|length }}</span>
+    </button>
+    {% comment %}
+    <button class="tab-btn" onclick="switchTab('donator',this)">
+      <i class="fa-solid fa-hand-holding-heart"></i> Donators
+      <span class="tab-count">{{ donators|length }}</span>
+    </button>
+    {% endcomment %}
+  </div>
+
+  <!-- TSO MEMBERS TAB -->
+  <div class="tab-content active" id="tab-tso">
+    <div class="member-grid" id="grid-tso">
+      {% for m in tso_members %}
+      <div class="glass-card m-card" id="mcard-{{ m.id }}">
+        {% if is_admin %}
+        <div class="m-actions">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','TSO','{{ m.education|default:''|escapejs }}','','{{ m.photo.url|default:''|escapejs }}')">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        {% endif %}
+        {% if m.photo %}
+          <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="m-photo"/>
+        {% else %}
+          <div class="m-ava"><i class="fa-solid fa-user"></i></div>
+        {% endif %}
+        <div class="m-name">{{ m.name }}</div>
+        <div class="m-role">{{ m.role }}</div>
+        {% if m.education %}<div class="m-edu"><i class="fa-solid fa-graduation-cap"></i> {{ m.education }}</div>{% endif %}
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <i class="fa-solid fa-user-slash"></i>
+        <p>No TSO members yet. Click "Add Member" to add one.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CABINET MEMBERS TAB -->
+  <div class="tab-content" id="tab-cabinet">
+    <div class="member-grid" id="grid-cabinet">
+      {% for m in cabinet_members %}
+      <div class="glass-card m-card" id="mcard-{{ m.id }}">
+        {% if is_admin %}
+        <div class="m-actions">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','CABINET','{{ m.education|default:''|escapejs }}','','{{ m.photo.url|default:''|escapejs }}')">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        {% endif %}
+        {% if m.photo %}
+          <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="m-photo"/>
+        {% else %}
+          <div class="m-ava"><i class="fa-solid fa-briefcase"></i></div>
+        {% endif %}
+        <div class="m-name">{{ m.name }}</div>
+        <div class="m-role">{{ m.role }}</div>
+        {% if m.education %}<div class="m-edu"><i class="fa-solid fa-graduation-cap"></i> {{ m.education }}</div>{% endif %}
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <i class="fa-solid fa-user-slash"></i>
+        <p>No cabinet members yet. Click "Add Member" to add one.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% comment %}
+  <!-- DONATORS TAB -->
+  <div class="tab-content" id="tab-donator">
+    <div class="member-grid" id="grid-donator">
+      {% for m in donators %}
+      <div class="glass-card m-card" id="mcard-{{ m.id }}">
+        {% if is_admin %}
+        <div class="m-actions">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','DONATOR','','{{ m.job_designation|default:''|escapejs }}','{{ m.photo.url|default:''|escapejs }}')">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        {% endif %}
+        {% if m.photo %}
+          <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="m-photo"/>
+        {% else %}
+          <div class="m-ava"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        {% endif %}
+        <div class="m-name">{{ m.name }}</div>
+        <div class="m-role">{{ m.role }}</div>
+        {% if m.job_designation %}<div class="m-edu"><i class="fa-solid fa-briefcase"></i> {{ m.job_designation }}</div>{% endif %}
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <i class="fa-solid fa-user-slash"></i>
+        <p>No donators yet. Click "Add Member" to add one.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endcomment %}
+
+</div>
+
+<!-- ADD/EDIT MEMBER MODAL -->
+<div class="modal-overlay" id="member-modal">
+  <div class="modal" style="max-width:540px;">
+    <button class="modal-close" onclick="closeMemberModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-top">
+      <i class="fa-solid fa-user-plus" style="font-size:2rem;color:var(--cyan);display:block;margin-bottom:.5rem;"></i>
+      <h3 id="modal-title-txt">Add Member</h3>
+      <p>Fill in the member details below</p>
+    </div>
+    <input type="hidden" id="m-edit-id"/>
+
+    <!-- Photo Upload -->
+    <div class="form-group">
+      <label>Photo (Optional)</label>
+      <div class="photo-upload-box" id="photo-upload-box" onclick="document.getElementById('m-photo').click()">
+        <div class="photo-preview" id="photo-preview">
+          <i class="fa-solid fa-camera" style="font-size:1.8rem;color:var(--cyan);opacity:.6;"></i>
+          <span style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">Click to upload photo</span>
+          <span style="font-size:.65rem;color:var(--faint);">JPG, PNG — max 5MB</span>
+        </div>
+      </div>
+      <input type="file" id="m-photo" accept="image/*" style="display:none;" onchange="previewMemberPhoto(this)"/>
+      <button type="button" id="remove-photo-btn" onclick="removeMemberPhoto()" style="display:none;background:none;border:none;color:#F87171;font-size:.72rem;cursor:pointer;margin-top:.4rem;"><i class="fa-solid fa-xmark"></i> Remove photo</button>
+    </div>
+
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input class="form-input" type="text" id="m-name" placeholder="e.g. Muhammad Ali"/>
+      <div class="err" id="m-name-err">Name is required.</div>
+    </div>
+    <div class="form-group">
+      <label>Role / Position *</label>
+      <input class="form-input" type="text" id="m-role" placeholder="e.g. General Secretary"/>
+      <div class="err" id="m-role-err">Role is required.</div>
+    </div>
+    <div class="form-group">
+      <label>Member Type *</label>
+      <select class="form-input" id="m-type" onchange="onMemberTypeChange()">
+        <option value="TSO">TSO Member</option>
+        <option value="CABINET">Cabinet Member</option>
+        {# <option value="DONATOR">Donator</option> #}
+      </select>
+    </div>
+
+    <div class="form-group" id="edu-group">
+      <label>Education *</label>
+      <input class="form-input" type="text" id="m-edu" placeholder="e.g. BS Computer Science, NUML"/>
+      <div class="err" id="m-edu-err">Education is required.</div>
+    </div>
+
+    <div class="form-group" id="job-group" style="display:none;">
+      <label>Job Designation *</label>
+      <input class="form-input" type="text" id="m-job" placeholder="e.g. Software Engineer at XYZ"/>
+      <div class="err" id="m-job-err">Job designation is required.</div>
+    </div>
+
+    <button class="submit-btn" id="m-submit-btn" onclick="saveMember()">
+      <i class="fa-solid fa-floppy-disk"></i> &nbsp;Save Member
+    </button>
+  </div>
+</div>
+
+<div style="height:3rem;"></div>
+{% endblock %}

@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | Thongmus Students Organization{% endblock %}
+
+{% block content %}
+
+<!-- ===== SECTION 1: HERO — Director + Gallery ===== -->
+<section class="hero-section">
+  <div class="section-head">
+    <div class="section-badge"><i class="fa-solid fa-star"></i> Welcome to TSO</div>
+    <h2 class="section-title">Empowering Students Since 2010</h2>
+  </div>
+  <div class="hero-grid">
+
+    <!-- Director Message -->
+    <div class="glass-card dir-card reveal-left">
+      <div class="sec-lbl"><i class="fa-solid fa-quote-left"></i> Director's Message</div>
+      <div class="dir-head">
+        {% if director and director.photo %}
+          <img src="{{ director.photo.url }}" alt="{{ director.name }}" class="dir-ava-img"/>
+        {% else %}
+          <div class="dir-ava"><i class="fa-solid fa-user-tie"></i></div>
+        {% endif %}
+        <div>
+          <div class="dir-nametxt">{{ director.name|default:"Director's Name" }}</div>
+          <div class="dir-roletxt">Director &mdash; TSO</div>
+        </div>
+      </div>
+      <p class="dir-msg">{{ director.message|default:"Welcome to Thongmus Students Organization — a family built on knowledge, unity, and service. Since 2010, we have strived to empower the youth of our community by providing platforms for education, leadership, and cultural growth. Together, we rise." }}</p>
+      <div class="chip-row">
+        <span class="chip"><i class="fa-solid fa-book"></i> Education</span>
+        <span class="chip"><i class="fa-solid fa-hand-fist"></i> Leadership</span>
+        <span class="chip"><i class="fa-solid fa-heart"></i> Unity</span>
+        <span class="chip"><i class="fa-solid fa-hands-helping"></i> Service</span>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="glass-card gallery-card reveal-right">
+      <div class="sec-lbl" style="justify-content:space-between;align-items:center;">
+        <span style="display:flex;align-items:center;gap:.5rem;"><i class="fa-solid fa-images"></i> Gallery</span>
+        {% if is_admin %}
+        <button class="g-manage-btn" onclick="openGalleryModal()">
+          <i class="fa-solid fa-folder-plus"></i> Manage
+        </button>
+        {% endif %}
+      </div>
+      <div class="slideshow" id="slideshow">
+        {% if gallery_images %}
+          {% for img in gallery_images %}
+            <div class="slide {% if forloop.first %}active{% endif %}">
+              <img src="{{ img.image.url }}" alt="{{ img.caption|default:'TSO Event' }}"/>
+              {% if img.caption %}<div class="slide-caption">{{ img.caption }}</div>{% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="slide active">
+            <div class="sl-ph">
+              <i class="fa-solid fa-image"></i>
+              <span>TSO Gallery</span>
+              <small>Click "Manage" to add photos</small>
+            </div>
+          </div>
+        {% endif %}
+        <button class="sl-btn sl-prev" onclick="changeSlide(-1)">&#8249;</button>
+        <button class="sl-btn sl-next" onclick="changeSlide(1)">&#8250;</button>
+      </div>
+      <div class="sl-dots" id="dots"></div>
+      <div class="sl-count" id="slCount">1 / {% if gallery_images %}{{ gallery_images|length }}{% else %}1{% endif %}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: Vision & Mission ===== -->
+<section class="vm-section">
+  <div class="section-head">
+    <div class="section-badge"><i class="fa-solid fa-compass"></i> Our Purpose</div>
+    <h2 class="section-title">Vision &amp; Mission</h2>
+    <p class="section-sub">Guiding principles that drive everything we do</p>
+  </div>
+  <div class="vm-grid">
+    <div class="glass-card vm-card vision">
+      <div class="vm-top"></div>
+      <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
+      <div class="vm-title">Our Vision</div>
+      <p class="vm-txt">To build a self-reliant, educated, and united community of Thongmus students who contribute meaningfully to society and carry forward their cultural heritage with pride.</p>
+      <ul class="vm-list">
+        <li>Empowering youth through quality education and mentorship</li>
+        <li>Bridging students from Thongmus across Pakistan</li>
+        <li>Preserving our rich cultural identity</li>
+        <li>Fostering leadership and civic responsibility</li>
+      </ul>
+    </div>
+    <div class="glass-card vm-card mission">
+      <div class="vm-top"></div>
+      <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
+      <div class="vm-title">Our Mission</div>
+      <p class="vm-txt">To actively support Thongmus students in their academic journey, personal development, and professional growth through organized programs, networking, and community service.</p>
+      <ul class="vm-list">
+        <li>Providing scholarships and academic assistance</li>
+        <li>Organizing skill-building workshops and events</li>
+        <li>Creating a strong alumni and donor network</li>
+        <li>Serving the Thongmus community with dedication</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: Alumni ===== -->
+<section class="alumni-section">
+  <div class="section-head">
+    <div class="section-badge"><i class="fa-solid fa-trophy"></i> Our Succeed</div>
+    <h2 class="section-title">Distinguished Alumni</h2>
+    <p class="section-sub">Proud members who have gone on to achieve great things</p>
+  </div>
+  {% if alumni %}
+  <div class="alumni-grid">
+    {% for a in alumni %}
+    <div class="glass-card alumni-card reveal-up">
+      {% if a.photo %}
+        <img src="{{ a.photo.url }}" alt="{{ a.name }}" class="alumni-photo"/>
+      {% else %}
+        <div class="alumni-ava"><i class="fa-solid fa-user-graduate"></i></div>
+      {% endif %}
+      <div class="alumni-name">{{ a.name }}</div>
+      <div class="alumni-designation">{{ a.designation }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:3rem;color:var(--muted);">
+    <i class="fa-solid fa-user-graduate" style="font-size:2.5rem;opacity:.3;display:block;margin-bottom:1rem;"></i>
+    <p style="font-size:.9rem;">Alumni will appear here once added from admin panel.</p>
+  </div>
+  {% endif %}
+</section>
+
+<!-- ===== SECTION 4: Feedback ===== -->
+<section class="feedback-section">
+  <div class="section-head">
+    <div class="section-badge"><i class="fa-solid fa-comments"></i> Community</div>
+    <h2 class="section-title">Share Your Thoughts</h2>
+    <p class="section-sub">Your feedback helps us grow and serve better</p>
+  </div>
+  <div class="feedback-inner">
+    <div class="glass-card feedback-card">
+      <div id="fb-form">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input class="form-input" type="text" id="fb-name" placeholder="Muhammad Ahmed"/>
+          <div class="err" id="fb-name-err"></div>
+        </div>
+        <div class="form-group">
+          <label>Rating *</label>
+          <div class="stars-row" id="star-box">
+            <span class="star" data-v="1">&#9733;</span>
+            <span class="star" data-v="2">&#9733;</span>
+            <span class="star" data-v="3">&#9733;</span>
+            <span class="star" data-v="4">&#9733;</span>
+            <span class="star" data-v="5">&#9733;</span>
+          </div>
+          <div class="err" id="fb-star-err"></div>
+        </div>
+        <div class="form-group">
+          <label>Your Message *</label>
+          <textarea class="form-input" id="fb-msg" rows="4" placeholder="Write your thoughts about TSO..."></textarea>
+          <div class="err" id="fb-msg-err"></div>
+        </div>
+        <button class="submit-btn" onclick="submitFeedback()">
+          <i class="fa-solid fa-paper-plane"></i> &nbsp;Submit Feedback
+        </button>
+      </div>
+      <div class="c-success" id="fb-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Thank you! Your feedback has been saved.</p>
+        <strong>Thongmus Students Organization &#10022;</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:3rem;"></div>
+
+<!-- ===== GALLERY MANAGE MODAL ===== -->
+<div class="modal-overlay" id="gallery-modal">
+  <div class="modal" style="max-width:580px;">
+    <button class="modal-close" onclick="closeGalleryModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-top">
+      <i class="fa-solid fa-images" style="font-size:1.8rem;color:var(--cyan);display:block;margin-bottom:.5rem;"></i>
+      <h3>Gallery Manager</h3>
+      <p>Add or remove photos from the gallery slideshow</p>
+    </div>
+
+    <!-- Current Images -->
+    <div style="margin-bottom:1.4rem;">
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:.7rem;">
+        <i class="fa-solid fa-photo-film" style="color:var(--cyan);margin-right:.4rem;"></i>Current Photos
+      </div>
+      <div id="g-admin-list"></div>
+    </div>
+
+    <!-- Add New Image -->
+    <div style="border-top:1px solid rgba(56,189,248,.1);padding-top:1.2rem;">
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:.8rem;">
+        <i class="fa-solid fa-plus" style="color:var(--cyan);margin-right:.4rem;"></i>Add New Photo
+      </div>
+
+      <!-- Photo picker -->
+      <div class="form-group">
+        <label>Photo *</label>
+        <div class="photo-upload-box" id="g-upload-box" onclick="document.getElementById('g-photo').click()">
+          <div class="photo-preview" id="g-photo-preview">
+            <i class="fa-solid fa-image" style="font-size:2rem;color:var(--cyan);opacity:.4;"></i>
+            <span style="font-size:.73rem;color:var(--muted);margin-top:.4rem;">Click to select image</span>
+          </div>
+        </div>
+        <input type="file" id="g-photo" accept="image/*" style="display:none;" onchange="previewGalleryPhoto(this)"/>
+        <div class="err" id="g-photo-err"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Caption (optional)</label>
+          <input class="form-input" type="text" id="g-caption" placeholder="e.g. Annual Gathering 2024"/>
+        </div>
+        <div class="form-group">
+          <label>Order (1, 2, 3…)</label>
+          <input class="form-input" type="number" id="g-order" placeholder="0" value="0" min="0"/>
+        </div>
+      </div>
+
+      <button class="submit-btn" id="g-add-btn" onclick="addGalleryImage()" style="margin-top:.3rem;">
+        <i class="fa-solid fa-plus"></i> Add to Gallery
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

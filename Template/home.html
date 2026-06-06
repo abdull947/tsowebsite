@@ -1,0 +1,144 @@
+
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thongmus Students Organization</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<script src="{% static 'script.js' %}"></script>
+</head>
+<body>
+<div class="bg-wrap"></div>
+<div id="wrap">
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand" onclick="showPage(\'home\')">
+   <img src="{% static 'images/logo.png' %}" alt="TSO Logo"/>
+    <div class="nav-name">Thongmus Students Organization<span>Since 2010 — Gilgit-Baltistan</span></div>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#127769;</button>
+    <div class="hamburger" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-btn active" onclick="showPage(\'home\');closeMenu()">Home</button>
+    <button class="nav-btn" onclick="showPage(\'about\');closeMenu()">About Us</button>
+    <button class="nav-btn" onclick="showPage(\'members\');closeMenu()">Members</button>
+    <button class="nav-btn" onclick="showPage(\'contact\');closeMenu()">Contact</button>
+    <button class="nav-btn join-btn" onclick="openModal();closeMenu()">Join Now &#10022;</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="home">
+  <div class="hero">
+    <div class="glass-card dir-card">
+      <div class="sec-lbl"><i class="fa-solid fa-quote-left"></i> Director Message</div>
+      <div class="dir-head">
+        <div class="dir-ava"><i class="fa-solid fa-user-tie"></i></div>
+        <div><div class="dir-nametxt">Director\'s Name</div><div class="dir-roletxt">Director &mdash; TSO</div></div>
+      </div>
+      <p class="dir-msg">Welcome to Thongmus Students Organization &mdash; a family built on knowledge, unity, and service. Since 2010, we have strived to empower the youth of our community by providing platforms for education, leadership, and cultural growth. Together, we rise.</p>
+      <div class="chip-row">
+        <span class="chip">Education</span>
+        <span class="chip">Leadership</span>
+        <span class="chip">Unity</span>
+        <span class="chip">Service</span>
+      </div>
+    </div>
+    <div class="glass-card gallery-card">
+      <div class="sec-lbl"><i class="fa-solid fa-images"></i> Gallery</div>
+      <div class="slideshow" id="slideshow">
+        <div class="slide active"><div class="sl-ph"><i class="fa-solid fa-image"></i><span>pic1.jpg</span></div></div>
+        <div class="slide"><div class="sl-ph"><i class="fa-solid fa-image"></i><span>pic2.jpg</span></div></div>
+        <div class="slide"><div class="sl-ph"><i class="fa-solid fa-image"></i><span>pic3.jpg</span></div></div>
+        <div class="slide"><div class="sl-ph"><i class="fa-solid fa-image"></i><span>pic4.jpg</span></div></div>
+        <div class="slide"><div class="sl-ph"><i class="fa-solid fa-image"></i><span>pic5.jpg</span></div></div>
+        <button class="sl-btn sl-prev" onclick="changeSlide(-1)">&#8249;</button>
+        <button class="sl-btn sl-next" onclick="changeSlide(1)">&#8250;</button>
+      </div>
+      <div class="sl-dots" id="dots"></div>
+      <div class="sl-count" id="slCount">1 / 5</div>
+    </div>
+  </div>
+
+  <div class="vm-section">
+    <div class="vm-grid">
+      <div class="glass-card vm-card vision">
+        <div class="vm-top"></div>
+        <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
+        <div class="vm-title">Our Vision</div>
+        <p class="vm-txt">To build a self-reliant, educated, and united community of Thongmus students who contribute meaningfully to society and carry forward their cultural heritage with pride.</p>
+        <ul class="vm-list"><li>Empowering youth through quality education</li><li>Building bridges between regions and generations</li><li>Fostering leadership and civic responsibility</li></ul>
+      </div>
+      <div class="glass-card vm-card mission">
+        <div class="vm-top"></div>
+        <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="vm-title">Our Mission</div>
+        <p class="vm-txt">To provide a supportive platform where students from Thongmus can connect, collaborate, grow academically, and give back to their community through service and advocacy.</p>
+        <ul class="vm-list"><li>Organizing scholarship and welfare programs</li><li>Promoting cultural events and awareness</li><li>Creating networks for career and academic support</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment-section">
+    <div class="comment-hdr">
+      <h2>Share Your Thoughts</h2>
+      <p>Your voice matters &mdash; comments are saved securely to our database.</p>
+    </div>
+    <div class="glass-card comment-form-card">
+      <div class="sec-lbl"><i class="fa-solid fa-pen-nib"></i> Leave a Comment</div>
+      <div id="c-form">
+        <div class="form-group"><label>Your Name *</label><input class="form-input" type="text" id="c-name" placeholder="Muhammad Ahmed"/><div class="err" id="c-name-err">Please enter your name.</div></div>
+        <div class="form-group"><label>Rating *</label>
+          <div class="stars-row" id="star-box">
+            <span class="star" data-v="1">&#9733;</span><span class="star" data-v="2">&#9733;</span>
+            <span class="star" data-v="3">&#9733;</span><span class="star" data-v="4">&#9733;</span>
+            <span class="star" data-v="5">&#9733;</span>
+          </div>
+          <div class="err" id="c-star-err">Please select a rating.</div>
+        </div>
+        <div class="form-group"><label>Message *</label><textarea class="form-input" id="c-msg" rows="4" placeholder="Write your thoughts..."></textarea><div class="err" id="c-msg-err">Please write a message.</div></div>
+        <button class="submit-btn" onclick="submitComment()"><i class="fa-solid fa-paper-plane"></i> &nbsp;Submit Comment</button>
+      </div>
+      <div class="c-success" id="c-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Thank you! Your comment has been saved to our database.</p>
+        <strong>Thongmus Students Organization &#10022;</strong>
+      </div>
+    </div>
+  </div>
+  <div style="height:1.5rem"></div>
+</div>
+
+
+</div><!-- end wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-socials">
+      <a href="#" class="soc-link"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#" class="soc-link"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" class="soc-link"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="#" class="soc-link"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+    <div class="footer-copy">&copy; 2025 Thongmus Students Organization &mdash; All rights reserved.</div>
+  </div>
+</footer>
+
+
+
+<script src="script.js"></script>
+
+<script src="{% static 'javascript.js' %}"></script>
+</body>
+</html>
+</body>
+
+</html>
+

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}Join Us | TSO{% endblock %}
+
+{% block content %}
+<div class="page-inner">
+  <div class="page-hdr" style="text-align:center;">
+    <div class="section-badge" style="display:inline-flex;margin-bottom:.8rem;"><i class="fa-solid fa-user-plus"></i> Become Part of TSO</div>
+    <h1>Join Our Family</h1>
+    <p>Choose how you would like to be part of Thongmus Students Organization</p>
+  </div>
+  <div class="page-div"></div>
+
+  <!-- JOIN TYPE TABS -->
+  <div class="member-tabs" style="max-width:700px;margin:0 auto 2rem;">
+    <button class="tab-btn active" onclick="switchJoinTab('tso-form', this)">
+      <i class="fa-solid fa-id-card"></i> TSO Member
+    </button>
+    <button class="tab-btn" onclick="switchJoinTab('cabinet-form', this)">
+      <i class="fa-solid fa-briefcase"></i> Cabinet Member
+    </button>
+    <button class="tab-btn" onclick="switchJoinTab('donator-form', this)">
+      <i class="fa-solid fa-hand-holding-heart"></i> Donarship
+    </button>
+  </div>
+
+  <!-- TSO MEMBER FORM -->
+  <div class="join-tab-content active" id="tso-form">
+    <div class="glass-card join-card">
+      <div class="join-card-head">
+        <div class="join-icon"><i class="fa-solid fa-id-card"></i></div>
+        <div>
+          <h3>TSO Member</h3>
+          <p>Join as a regular TSO member — students welcome</p>
+        </div>
+      </div>
+      <div id="tso-form-inner">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="tso-name" placeholder="Muhammad Ahmed"/><div class="err" id="tso-name-err">Required.</div></div>
+          <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="tso-fname" placeholder="Father's name"/><div class="err" id="tso-fname-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email *</label><input class="form-input" type="email" id="tso-email" placeholder="you@email.com"/><div class="err" id="tso-email-err">Valid email required.</div></div>
+          <div class="form-group"><label>Phone *</label><input class="form-input" type="tel" id="tso-phone" placeholder="+92 300 0000000"/><div class="err" id="tso-phone-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Institution *</label><input class="form-input" type="text" id="tso-inst" placeholder="University / College"/><div class="err" id="tso-inst-err">Required.</div></div>
+          <div class="form-group"><label>Program *</label><input class="form-input" type="text" id="tso-prog" placeholder="BS Computer Science"/><div class="err" id="tso-prog-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Education Level *</label><input class="form-input" type="text" id="tso-edu" placeholder="e.g. BS, MS, Matric"/><div class="err" id="tso-edu-err">Required.</div></div>
+          <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="tso-area" placeholder="Thongmus"/><div class="err" id="tso-area-err">Required.</div></div>
+        </div>
+        <button class="submit-btn" onclick="submitJoin('TSO')"><i class="fa-solid fa-user-plus"></i> &nbsp;Register as TSO Member</button>
+      </div>
+      <div class="c-success" id="tso-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Welcome to the TSO family! Your application has been received.</p>
+        <strong>Thongmus Students Organization &#10022;</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- CABINET MEMBER FORM -->
+  <div class="join-tab-content" id="cabinet-form">
+    <div class="glass-card join-card">
+      <div class="join-card-head">
+        <div class="join-icon" style="background:rgba(0,100,200,.15);color:var(--blue3);"><i class="fa-solid fa-briefcase"></i></div>
+        <div>
+          <h3>Cabinet Member</h3>
+          <p>Apply for a leadership role in TSO Cabinet</p>
+        </div>
+      </div>
+      <div id="cab-form-inner">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="cab-name" placeholder="Muhammad Ahmed"/><div class="err" id="cab-name-err">Required.</div></div>
+          <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="cab-fname" placeholder="Father's name"/><div class="err" id="cab-fname-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email *</label><input class="form-input" type="email" id="cab-email" placeholder="you@email.com"/><div class="err" id="cab-email-err">Valid email required.</div></div>
+          <div class="form-group"><label>Phone *</label><input class="form-input" type="tel" id="cab-phone" placeholder="+92 300 0000000"/><div class="err" id="cab-phone-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Institution *</label><input class="form-input" type="text" id="cab-inst" placeholder="University / College"/><div class="err" id="cab-inst-err">Required.</div></div>
+          <div class="form-group"><label>Program *</label><input class="form-input" type="text" id="cab-prog" placeholder="BS Computer Science"/><div class="err" id="cab-prog-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Education Level *</label><input class="form-input" type="text" id="cab-edu" placeholder="e.g. BS, MS, PhD"/><div class="err" id="cab-edu-err">Required.</div></div>
+          <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="cab-area" placeholder="Thongmus"/><div class="err" id="cab-area-err">Required.</div></div>
+        </div>
+        <button class="submit-btn" onclick="submitJoin('CABINET')"><i class="fa-solid fa-briefcase"></i> &nbsp;Apply for Cabinet</button>
+      </div>
+      <div class="c-success" id="cab-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Your cabinet application has been received. We will contact you soon.</p>
+        <strong>Thongmus Students Organization &#10022;</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- DONATOR FORM -->
+  <div class="join-tab-content" id="donator-form">
+    <div class="glass-card join-card">
+      <div class="join-card-head">
+        <div class="join-icon" style="background:rgba(0,150,100,.15);color:#4CAF50;"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <div>
+          <h3>Donator</h3>
+          <p>Support TSO by becoming a valued donator</p>
+        </div>
+      </div>
+      <div id="don-form-inner">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="don-name" placeholder="Muhammad Ahmed"/><div class="err" id="don-name-err">Required.</div></div>
+          <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="don-fname" placeholder="Father's name"/><div class="err" id="don-fname-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email *</label><input class="form-input" type="email" id="don-email" placeholder="you@email.com"/><div class="err" id="don-email-err">Valid email required.</div></div>
+          <div class="form-group"><label>Phone *</label><input class="form-input" type="tel" id="don-phone" placeholder="+92 300 0000000"/><div class="err" id="don-phone-err">Required.</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Job Designation *</label><input class="form-input" type="text" id="don-job" placeholder="e.g. Engineer, Doctor, Teacher"/><div class="err" id="don-job-err">Required.</div></div>
+          <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="don-area" placeholder="Thongmus"/><div class="err" id="don-area-err">Required.</div></div>
+        </div>
+        <button class="submit-btn" onclick="submitJoin('DONATOR')" style="background:linear-gradient(135deg,#1b6ca8,#4CAF50);">
+          <i class="fa-solid fa-hand-holding-heart"></i> &nbsp;Register as Donator
+        </button>
+      </div>
+      <div class="c-success" id="don-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Thank you for your generosity! Your registration has been received.</p>
+        <strong>Thongmus Students Organization &#10022;</strong>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div style="height:3rem;"></div>
+{% endblock %}

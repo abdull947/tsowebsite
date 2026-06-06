@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  * { box-sizing: border-box; }
+  .dash-header { background: linear-gradient(135deg, #1E3A8A, #1D4ED8); padding: 1.2rem 2rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .dash-header h1 { font-size: 1.4rem; color: #fff; margin-bottom: .2rem; }
+  .dash-header p { color: #93C5FD; font-size: .8rem; }
+  .dash-container { max-width: 1200px; margin: 0 auto; padding: 1.2rem 1.5rem; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin-bottom: 1.2rem; }
+  .stat-card { background: rgba(255,255,255,.05); border: 1px solid rgba(56,189,248,.2); border-radius: 12px; padding: .9rem; text-align: center; }
+  .stat-card .val { font-size: 1.3rem; font-weight: 700; color: #38BDF8; display: block; }
+  .stat-card .lbl { font-size: .7rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; margin-top: .2rem; }
+  .charts-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 1rem; margin-bottom: 1.2rem; }
+  .chart-card { background: rgba(255,255,255,.04); border: 1px solid rgba(56,189,248,.15); border-radius: 14px; padding: 1rem; }
+  .chart-card h3 { font-size: .8rem; color: #7DD3FC; margin-bottom: .8rem; letter-spacing: .5px; text-transform: uppercase; }
+  .chart-wrap { position: relative; height: 200px; }
+  .table-card { background: rgba(255,255,255,.04); border: 1px solid rgba(56,189,248,.15); border-radius: 14px; padding: 1.2rem; margin-bottom: 1.5rem; }
+  .table-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: .8rem; }
+  .table-top h3 { font-size: .8rem; color: #7DD3FC; text-transform: uppercase; letter-spacing: .5px; }
+  #searchInput { padding: .4rem .9rem; border-radius: 8px; border: 1px solid rgba(56,189,248,.25); background: rgba(255,255,255,.07); color: #E2E8F0; font-size: .8rem; outline: none; width: 200px; }
+  #searchInput:focus { border-color: #38BDF8; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+  th { background: rgba(56,189,248,.1); color: #7DD3FC; padding: .55rem .7rem; text-align: center; font-weight: 700; font-size: .68rem; letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; }
+  td { padding: .5rem .7rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,.05); color: #CBD5E1; }
+td:first-child { 
+  text-align: left; 
+  color: #1e293b !important;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 180px;
+}
+body.day td:first-child {
+  color: #1e293b !important;
+}
+body:not(.day) td:first-child {
+  color: #E2E8F0 !important;
+}  tr:hover td { background: rgba(56,189,248,.05); }
+  .total-cell { font-weight: 700; color: #34D399 !important; }
+  .amount { color: #93C5FD; }
+  .zero { color: #334155; }
+  @media(max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } .dash-header h1 { font-size: 1.1rem; } }
+</style>
+
+<div class="dash-header">
+  <h1>TSO Welfare & Development Fund</h1>
+  <p>Donation Record Dashboard</p>
+</div>
+
+<div class="dash-container">
+  <div class="stats-grid">
+    <div class="stat-card"><span class="val" id="totalFund">0</span><span class="lbl">Total Fund</span></div>
+    <div class="stat-card"><span class="val" id="totalDonors">0</span><span class="lbl">Total Donors</span></div>
+    <div class="stat-card"><span class="val" id="topDonor">—</span><span class="lbl">Top Donor</span></div>
+    <div class="stat-card"><span class="val" id="avgDonation">0</span><span class="lbl">Avg Donation</span></div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>📊 Monthly Collections</h3>
+      <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>🥧 Top Donors</h3>
+      <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-top">
+      <h3>👥 Individual Donor Records</h3>
+      <input type="text" id="searchInput" placeholder="🔍 Search donor...">
+    </div>
+    <div class="table-wrap">
+      <table id="donorTable">
+        <thead>
+          <tr>
+            <th>Donor Name</th>
+            <th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+            <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
+            <th>May</th><th>Jun</th><th>Jul</th><th>Aug</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const months = ['September','October','November','December','January','February','March','April','May','June','July','August'];
+const shortMonths = ['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+const donors = {{ donors|safe }};
+const monthlyTotals = {{ monthly_totals|safe }};
+
+const totalFund = donors.reduce((s, d) => s + d.total, 0);
+document.getElementById('totalFund').textContent = 'Rs ' + totalFund.toLocaleString();
+document.getElementById('totalDonors').textContent = donors.length;
+const topDonorObj = donors.reduce((a, b) => a.total > b.total ? a : b, donors[0]);
+document.getElementById('topDonor').textContent = topDonorObj ? topDonorObj.name : '—';
+document.getElementById('avgDonation').textContent = 'Rs ' + Math.round(totalFund / donors.length).toLocaleString();
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: shortMonths,
+    datasets: [{ label: 'Monthly Total (Rs)', data: months.map(m => monthlyTotals[m] || 0), backgroundColor: 'rgba(56,189,248,0.55)', borderColor: '#38BDF8', borderWidth: 2, borderRadius: 5 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94A3B8', font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { color: '#94A3B8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.05)' } },
+      y: { ticks: { color: '#94A3B8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.05)' }, beginAtZero: true }
+    }
+  }
+});
+
+const top8 = [...donors].sort((a,b) => b.total - a.total).slice(0, 8);
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: top8.map(d => d.name),
+    datasets: [{ data: top8.map(d => d.total), backgroundColor: ['#38BDF8','#818CF8','#34D399','#FCD34D','#F87171','#A78BFA','#6EE7B7','#FCA5A5'], borderColor: '#0F172A', borderWidth: 2 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 9 }, boxWidth: 10, padding: 6 } } }
+  }
+});
+
+function renderTable(filter) {
+  filter = filter || '';
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  donors.filter(d => d.name.toLowerCase().includes(filter.toLowerCase())).forEach(function(d) {
+    const tr = document.createElement('tr');
+    let html = '<td>' + d.name + '</td>';
+    months.forEach(function(m) {
+      const amt = d.months[m] || 0;
+      html += amt > 0 ? '<td class="amount">' + amt.toLocaleString() + '</td>' : '<td class="zero">—</td>';
+    });
+    html += '<td class="total-cell">Rs ' + d.total.toLocaleString() + '</td>';
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  });
+}
+renderTable();
+document.getElementById('searchInput').addEventListener('input', function(e) { renderTable(e.target.value); });
+</script>
+{% endblock %}
