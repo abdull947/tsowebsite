@@ -11,16 +11,16 @@
   <div class="page-div"></div>
 
   <!-- CRUD Admin Panel — only for admin -->
-  {% if is_admin %}
-  <div class="admin-panel glass-card">
+  {% comment %}
+<div class="admin-panel glass-card">
     <div class="admin-panel-head">
       <span><i class="fa-solid fa-sliders"></i> Manage Members</span>
       <button class="add-btn" onclick="openAddModal()">
         <i class="fa-solid fa-plus"></i> Add Member
       </button>
     </div>
-  </div>
-  {% endif %}
+</div>
+{% endcomment %}
 
   <!-- TABS -->
   <div class="member-tabs">
@@ -47,7 +47,7 @@
       <div class="glass-card m-card" id="mcard-{{ m.id }}">
         {% if is_admin %}
         <div class="m-actions">
-          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','TSO','{{ m.education|default:''|escapejs }}','','{{ m.photo.url|default:''|escapejs }}')">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','TSO','{{ m.education|default:""|escapejs }}','','{{ m.photo.url|default:""|escapejs }}')">
             <i class="fa-solid fa-pen"></i>
           </button>
           <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
@@ -80,7 +80,7 @@
       <div class="glass-card m-card" id="mcard-{{ m.id }}">
         {% if is_admin %}
         <div class="m-actions">
-          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','CABINET','{{ m.education|default:''|escapejs }}','','{{ m.photo.url|default:''|escapejs }}')">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','CABINET','{{ m.education|default:""|escapejs }}','','{% if m.photo %}{{ m.photo.url|escapejs }}{% endif %}')">
             <i class="fa-solid fa-pen"></i>
           </button>
           <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
@@ -114,12 +114,13 @@
       <div class="glass-card m-card" id="mcard-{{ m.id }}">
         {% if is_admin %}
         <div class="m-actions">
-          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','DONATOR','','{{ m.job_designation|default:''|escapejs }}','{{ m.photo.url|default:''|escapejs }}')">
+          <button class="m-action-btn edit" onclick="openEditModal({{ m.id }},'{{ m.name|escapejs }}','{{ m.role|escapejs }}','DONATOR','','{{ m.job_designation|default:""|escapejs }}','{{ m.photo.url|default:""|escapejs }}')">
             <i class="fa-solid fa-pen"></i>
           </button>
-          <button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
+          {%comment}<button class="m-action-btn del" onclick="deleteMember({{ m.id }})">
             <i class="fa-solid fa-trash"></i>
           </button>
+          {%comment%}
         </div>
         {% endif %}
         {% if m.photo %}

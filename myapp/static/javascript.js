@@ -6,11 +6,11 @@
   let W=canvas.width=window.innerWidth,H=canvas.height=window.innerHeight;
   const N=window.innerWidth<600?45:90;
   const particles=[];
-  const palette=['hsl(197,90%,72%)','hsl(232,80%,76%)','hsl(42,95%,68%)','hsl(213,85%,70%)','hsl(260,70%,78%)'];
+  const palette=['hsl(221, 87%, 50%)','hsl(307, 88%, 48%)','hsl(96, 93%, 50%)','hsl(213, 94%, 49%)','hsl(0, 92%, 49%)'];
   function rand(a,b){return Math.random()*(b-a)+a;}
   for(let i=0;i<N;i++){
     particles.push({x:rand(0,W),y:rand(0,H),vx:rand(-.28,.28),vy:rand(-.28,.28),
-      r:rand(.8,2.2),a:rand(.12,.55),color:palette[Math.floor(Math.random()*palette.length)]});
+      r:rand(2.0,6.0),a:rand(.13,.45),color:palette[Math.floor(Math.random()*palette.length)]});
   }
   const CONN=130;
   function draw(){
@@ -25,15 +25,17 @@
       for(let j=i+1;j<particles.length;j++){
         const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
         const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<CONN){ctx.globalAlpha=.13*(1-d/CONN);ctx.beginPath();
+        if(d<CONN){ctx.globalAlpha=.40*(1-d/CONN);ctx.beginPath();
           ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle='rgba(56,189,248,1)';ctx.lineWidth=.7;ctx.stroke();}
+          ctx.strokeStyle='rgba(56,189,248,0.8)';ctx.lineWidth=2.5;ctx.stroke();
+        }
       }
     }
     ctx.globalAlpha=1;requestAnimationFrame(draw);
   }
   draw();
-  let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;},200);});
+  let rt;
+  window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;},200);});
 })();
 
 /* ===== THEME ===== */
@@ -268,7 +270,6 @@ function saveMember(){
   if(mtype==='DONATOR'&&!job){showErr('m-job-err','Job designation is required.');ok=false;}
   if(!ok)return;
 
-  // Use FormData to support photo upload
   const fd=new FormData();
   fd.append('name',name);fd.append('role',role);fd.append('member_type',mtype);
   fd.append('education',mtype!=='DONATOR'?edu:'');
@@ -381,5 +382,3 @@ document.addEventListener('DOMContentLoaded',function(){
     o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
   });
 });
-
-

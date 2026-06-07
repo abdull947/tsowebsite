@@ -41,9 +41,11 @@ def members_page(request):
 def join_page(request):
     return render(request, 'join.html')
 
+from .models import Feedback, Member, GalleryImage, Director, Registration, Announcement, Alumni, ContactInfo
 
 def contact(request):
-    return render(request, 'contact.html')
+    info = ContactInfo.objects.first()
+    return render(request, 'contact.html', {'info': info})
 
 
 # ─── API: Announcement ────────────────────────────────────────────────────────
@@ -197,27 +199,38 @@ def submit_feedback(request):
 @require_http_methods(['POST'])
 def submit_registration(request):
     try:
-        data = json.loads(request.body)
-        reg_type = data.get('reg_type', 'TSO')
-        Registration.objects.create(
-            full_name=data.get('name', '').strip(),
-            father_name=data.get('fname', '').strip(),
-            email=data.get('email', '').strip(),
-            phone=data.get('phone', '').strip(),
-            area=data.get('area', '').strip(),
+        reg_type = request.POST.get('reg_type', 'TSO')
+        photo = request.FILES.get('photo')
+
+        reg = Registration.objects.create(
+            full_name=request.POST.get('name', '').strip(),
+            father_name=request.POST.get('fname', '').strip(),
+            email=request.POST.get('email', '').strip(),
+            phone=request.POST.get('phone', '').strip(),
+            area=request.POST.get('area', '').strip(),
             reg_type=reg_type,
-            institution=data.get('inst', '').strip() or None,
-            program=data.get('prog', '').strip() or None,
-            education=data.get('education', '').strip() or None,
-            job_designation=data.get('job_designation', '').strip() or None,
+            institution=request.POST.get('inst', '').strip() or None,
+            program=request.POST.get('prog', '').strip() or None,
+            education=request.POST.get('education', '').strip() or None,
+            job_designation=request.POST.get('job_designation', '').strip() or None,
+            photo=photo,
         )
+
+        # 🔥 AUTO ADD TO MEMBER TABLE
+        Member.objects.create(
+            name=reg.full_name,
+            role="Member",
+            member_type=reg.reg_type,
+            education=reg.education,
+            job_designation=reg.job_designation,
+            photo=reg.photo,
+            is_active=True
+        )
+
         return JsonResponse({'success': True})
+
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
-
-
-
-#for donation
 
 SHEET_ID = '1-9UH3SbuNAfauuabZFLoJTc4gd2XNGTTnKiwZt0zSdo'
 SHEET_URL = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1'

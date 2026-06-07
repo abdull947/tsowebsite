@@ -44,3 +44,8 @@ class RegistrationAdmin(admin.ModelAdmin):
     list_filter = ['reg_type']
     readonly_fields = ['full_name', 'father_name', 'email', 'phone', 'area', 'reg_type',
                        'institution', 'program', 'education', 'job_designation', 'registered_at']
+from .models import ContactInfo
+
+@admin.register(ContactInfo)
+class ContactInfoAdmin(admin.ModelAdmin):
+    pass

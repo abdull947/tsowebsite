@@ -34,6 +34,20 @@
         </div>
       </div>
       <div id="tso-form-inner">
+
+        <!-- Photo Upload -->
+        <div class="form-group" style="margin-bottom:1.2rem;">
+          <label>Profile Photo (Optional)</label>
+          <div class="photo-upload-box" id="tso-photo-box" onclick="document.getElementById('tso-photo').click()" style="cursor:pointer;border:2px dashed rgba(56,189,248,.3);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:border .2s;">
+            <div id="tso-photo-preview">
+              <i class="fa-solid fa-camera" style="font-size:2rem;color:var(--cyan);opacity:.6;"></i>
+              <div style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">Click to upload photo</div>
+              <div style="font-size:.65rem;color:var(--faint);">JPG, PNG — max 5MB</div>
+            </div>
+          </div>
+          <input type="file" id="tso-photo" accept="image/*" style="display:none;" onchange="previewJoinPhoto(this,'tso-photo-preview')"/>
+        </div>
+
         <div class="form-row">
           <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="tso-name" placeholder="Muhammad Ahmed"/><div class="err" id="tso-name-err">Required.</div></div>
           <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="tso-fname" placeholder="Father's name"/><div class="err" id="tso-fname-err">Required.</div></div>
@@ -50,7 +64,7 @@
           <div class="form-group"><label>Education Level *</label><input class="form-input" type="text" id="tso-edu" placeholder="e.g. BS, MS, Matric"/><div class="err" id="tso-edu-err">Required.</div></div>
           <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="tso-area" placeholder="Thongmus"/><div class="err" id="tso-area-err">Required.</div></div>
         </div>
-        <button class="submit-btn" onclick="submitJoin('TSO')"><i class="fa-solid fa-user-plus"></i> &nbsp;Register as TSO Member</button>
+        <button class="submit-btn" onclick="submitJoinWithPhoto('TSO','tso-photo')"><i class="fa-solid fa-user-plus"></i> &nbsp;Register as TSO Member</button>
       </div>
       <div class="c-success" id="tso-success">
         <i class="fa-solid fa-circle-check"></i>
@@ -71,6 +85,23 @@
         </div>
       </div>
       <div id="cab-form-inner">
+
+        <!-- Photo Upload -->
+        <div class="photo-upload-box" onclick="document.getElementById('cab-photo').click()"
+     style="cursor:pointer;border:2px dashed rgba(56,189,248,.3);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;">
+
+  <div id="cab-photo-preview">
+    <i class="fa-solid fa-camera" style="font-size:2rem;color:var(--cyan);opacity:.6;"></i>
+    <div style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">
+      Click to upload photo
+    </div>
+  </div>
+</div>
+
+<input type="file" id="cab-photo" accept="image/*"
+       style="display:none;"
+       onchange="previewJoinPhoto(this,'cab-photo-preview')"/>
+
         <div class="form-row">
           <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="cab-name" placeholder="Muhammad Ahmed"/><div class="err" id="cab-name-err">Required.</div></div>
           <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="cab-fname" placeholder="Father's name"/><div class="err" id="cab-fname-err">Required.</div></div>
@@ -87,7 +118,7 @@
           <div class="form-group"><label>Education Level *</label><input class="form-input" type="text" id="cab-edu" placeholder="e.g. BS, MS, PhD"/><div class="err" id="cab-edu-err">Required.</div></div>
           <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="cab-area" placeholder="Thongmus"/><div class="err" id="cab-area-err">Required.</div></div>
         </div>
-        <button class="submit-btn" onclick="submitJoin('CABINET')"><i class="fa-solid fa-briefcase"></i> &nbsp;Apply for Cabinet</button>
+        <button class="submit-btn" onclick="submitJoinWithPhoto('CABINET','cab-photo')"><i class="fa-solid fa-briefcase"></i> &nbsp;Apply for Cabinet</button>
       </div>
       <div class="c-success" id="cab-success">
         <i class="fa-solid fa-circle-check"></i>
@@ -108,6 +139,20 @@
         </div>
       </div>
       <div id="don-form-inner">
+
+        <!-- Photo Upload -->
+        <div class="form-group" style="margin-bottom:1.2rem;">
+          <label>Profile Photo (Optional)</label>
+          <div class="photo-upload-box" onclick="document.getElementById('don-photo').click()" style="cursor:pointer;border:2px dashed rgba(56,189,248,.3);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:border .2s;">
+            <div id="don-photo-preview">
+              <i class="fa-solid fa-camera" style="font-size:2rem;color:var(--cyan);opacity:.6;"></i>
+              <div style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">Click to upload photo</div>
+              <div style="font-size:.65rem;color:var(--faint);">JPG, PNG — max 5MB</div>
+            </div>
+          </div>
+          <input type="file" id="don-photo" accept="image/*" style="display:none;" onchange="previewJoinPhoto(this,'don-photo-preview')"/>
+        </div>
+
         <div class="form-row">
           <div class="form-group"><label>Full Name *</label><input class="form-input" type="text" id="don-name" placeholder="Muhammad Ahmed"/><div class="err" id="don-name-err">Required.</div></div>
           <div class="form-group"><label>Father's Name *</label><input class="form-input" type="text" id="don-fname" placeholder="Father's name"/><div class="err" id="don-fname-err">Required.</div></div>
@@ -120,7 +165,7 @@
           <div class="form-group"><label>Job Designation *</label><input class="form-input" type="text" id="don-job" placeholder="e.g. Engineer, Doctor, Teacher"/><div class="err" id="don-job-err">Required.</div></div>
           <div class="form-group"><label>Village / Area *</label><input class="form-input" type="text" id="don-area" placeholder="Thongmus"/><div class="err" id="don-area-err">Required.</div></div>
         </div>
-        <button class="submit-btn" onclick="submitJoin('DONATOR')" style="background:linear-gradient(135deg,#1b6ca8,#4CAF50);">
+        <button class="submit-btn" onclick="submitJoinWithPhoto('DONATOR','don-photo')" style="background:linear-gradient(135deg,#1b6ca8,#4CAF50);">
           <i class="fa-solid fa-hand-holding-heart"></i> &nbsp;Register as Donator
         </button>
       </div>
@@ -134,4 +179,78 @@
 
 </div>
 <div style="height:3rem;"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function previewJoinPhoto(input, previewId) {
+  const preview = document.getElementById(previewId);
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    preview.innerHTML = '<img src="' + e.target.result + '" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(56,189,248,.5);"/>';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function getCookie(n) {
+  let v = null;
+  document.cookie.split(';').forEach(c => {
+    c = c.trim();
+    if (c.startsWith(n + '=')) v = decodeURIComponent(c.slice(n.length + 1));
+  });
+  return v;
+}
+
+function showErr(id, msg) { const e = document.getElementById(id); if (e) { e.textContent = msg; e.style.display = 'block'; } }
+function hideErr(id) { const e = document.getElementById(id); if (e) e.style.display = 'none'; }
+function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+function validPhone(p) { return /^[+]?[\d\s\-]{10,16}$/.test(p); }
+
+function submitJoinWithPhoto(type, photoInputId) {
+  const maps = {
+    TSO: { prefix: 'tso', fields: { name: 'tso-name', fname: 'tso-fname', email: 'tso-email', phone: 'tso-phone', inst: 'tso-inst', prog: 'tso-prog', education: 'tso-edu', area: 'tso-area' } },
+    CABINET: { prefix: 'cab', fields: { name: 'cab-name', fname: 'cab-fname', email: 'cab-email', phone: 'cab-phone', inst: 'cab-inst', prog: 'cab-prog', education: 'cab-edu', area: 'cab-area' } },
+    DONATOR: { prefix: 'don', fields: { name: 'don-name', fname: 'don-fname', email: 'don-email', phone: 'don-phone', job_designation: 'don-job', area: 'don-area' } }
+  };
+
+  const { prefix, fields } = maps[type];
+  let ok = true;
+  const fd = new FormData();
+  fd.append('reg_type', type);
+
+  Object.entries(fields).forEach(([key, id]) => {
+    const el = document.getElementById(id); if (!el) return;
+    hideErr(id + '-err');
+    const val = el.value.trim();
+    if (!val) { showErr(id + '-err', 'This field is required.'); ok = false; }
+    else if (key === 'email' && !validEmail(val)) { showErr(id + '-err', 'Enter a valid email.'); ok = false; }
+    else if (key === 'phone' && !validPhone(val)) { showErr(id + '-err', 'Enter a valid phone number.'); ok = false; }
+    else fd.append(key, val);
+  });
+
+  if (!ok) return;
+
+  const photoInput = document.getElementById(photoInputId);
+  if (photoInput && photoInput.files[0]) fd.append('photo', photoInput.files[0]);
+
+  fetch('/api/register/', {
+    method: 'POST',
+    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    body: fd
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.success) {
+      const fi = document.getElementById(prefix + '-form-inner');
+      const su = document.getElementById(prefix + '-success');
+      if (fi) fi.style.display = 'none';
+      if (su) su.style.display = 'block';
+    } else {
+      alert('Error: ' + (d.error || 'Please try again.'));
+    }
+  })
+  .catch(() => alert('Server error.'));
+}
+</script>
 {% endblock %}

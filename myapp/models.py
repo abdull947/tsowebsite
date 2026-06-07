@@ -108,6 +108,7 @@ class Registration(models.Model):
     program = models.CharField(max_length=200, blank=True, null=True)
     education = models.CharField(max_length=300, blank=True, null=True)
     job_designation = models.CharField(max_length=200, blank=True, null=True)
+    photo = models.ImageField(upload_to='registrations/', blank=True, null=True)
     registered_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -115,3 +116,16 @@ class Registration(models.Model):
 
     class Meta:
         ordering = ['-registered_at']
+class ContactInfo(models.Model):
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=30, blank=True)
+    whatsapp = models.CharField(max_length=30, blank=True)
+    region = models.CharField(max_length=100, blank=True)
+    facebook = models.CharField(max_length=200, blank=True)
+    instagram = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return "Contact Information"
+
+    class Meta:
+        verbose_name = "Contact Info"

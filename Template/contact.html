@@ -11,30 +11,42 @@
   <div class="page-div"></div>
 
   <div class="contact-grid">
+    {% if info.email %}
     <div class="glass-card c-item reveal-up">
       <div class="c-icon"><i class="fa-solid fa-envelope"></i></div>
-      <div><div class="c-lbl">Email</div><div class="c-val">tso@thongmus.org</div></div>
+      <div><div class="c-lbl">Email</div><div class="c-val">{{ info.email }}</div></div>
     </div>
+    {% endif %}
+    {% if info.phone %}
     <div class="glass-card c-item reveal-up" style="transition-delay:.1s;">
       <div class="c-icon"><i class="fa-solid fa-phone"></i></div>
-      <div><div class="c-lbl">Phone</div><div class="c-val">+92 XXX XXXXXXX</div></div>
+      <div><div class="c-lbl">Phone</div><div class="c-val">{{ info.phone }}</div></div>
     </div>
+    {% endif %}
+    {% if info.region %}
     <div class="glass-card c-item reveal-up" style="transition-delay:.2s;">
       <div class="c-icon"><i class="fa-solid fa-location-dot"></i></div>
-      <div><div class="c-lbl">Region</div><div class="c-val">Thongmus, Gilgit-Baltistan</div></div>
+      <div><div class="c-lbl">Region</div><div class="c-val">{{ info.region }}</div></div>
     </div>
+    {% endif %}
+    {% if info.whatsapp %}
     <div class="glass-card c-item reveal-up" style="transition-delay:.3s;">
       <div class="c-icon"><i class="fa-brands fa-whatsapp"></i></div>
-      <div><div class="c-lbl">WhatsApp</div><div class="c-val">+92 XXX XXXXXXX</div></div>
+      <div><div class="c-lbl">WhatsApp</div><div class="c-val">{{ info.whatsapp }}</div></div>
     </div>
+    {% endif %}
+    {% if info.facebook %}
     <div class="glass-card c-item reveal-up" style="transition-delay:.4s;">
       <div class="c-icon"><i class="fa-brands fa-facebook-f"></i></div>
-      <div><div class="c-lbl">Facebook</div><div class="c-val">Thongmus Students Organization</div></div>
+      <div><div class="c-lbl">Facebook</div><div class="c-val">{{ info.facebook }}</div></div>
     </div>
+    {% endif %}
+    {% if info.instagram %}
     <div class="glass-card c-item reveal-up" style="transition-delay:.5s;">
       <div class="c-icon"><i class="fa-brands fa-instagram"></i></div>
-      <div><div class="c-lbl">Instagram</div><div class="c-val">@tso_thongmus</div></div>
+      <div><div class="c-lbl">Instagram</div><div class="c-val">{{ info.instagram }}</div></div>
     </div>
+    {% endif %}
   </div>
 </div>
 <div style="height:3rem;"></div>
